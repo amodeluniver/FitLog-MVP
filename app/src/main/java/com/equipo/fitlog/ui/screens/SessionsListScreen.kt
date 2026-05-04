@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import com.equipo.fitlog.ui.viewmodel.SessionViewModel
 import androidx.compose.ui.Modifier
@@ -19,23 +20,51 @@ fun SessionListScreen(navController: NavController, vm: SessionViewModel) {
         vm.loadSessions()
     }
 
-    Column {
-        Button(onClick = { navController.navigate("add") }) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+
+        Text(
+            "Historial de sesiones",
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = { navController.navigate("add") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Nueva sesión")
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
+
         LazyColumn {
             items(sessions) { session ->
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable { navController.navigate("detail") }
+                        .padding(6.dp)
+                        .clickable {
+                            navController.navigate("detail/${session.id}")
+                        }
                 ) {
-                    Column(Modifier.padding(8.dp)) {
-                        Text(session.routineName)
+                    Column(modifier = Modifier.padding(12.dp)) {
+
+                        Text(session.routineName, style = MaterialTheme.typography.titleMedium)
                         Text(session.date)
-                        Text(if (session.completed) "Completada" else "Pendiente")
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            if (session.completed) "Completada" else "Pendiente",
+                            color = if (session.completed) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.error
+                        )
                     }
                 }
             }
