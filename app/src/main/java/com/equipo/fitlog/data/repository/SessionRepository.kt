@@ -6,8 +6,9 @@ class SessionRepository {
 
     private val sessions = mutableListOf<Session>()
 
-    fun getSessions(): List<Session> =
-        sessions.sortedByDescending { it.date }
+    fun getSessions(): List<Session> {
+        return sessions.sortedByDescending { it.date }
+    }
 
     fun addSession(session: Session) {
         sessions.add(session)

@@ -7,9 +7,10 @@ import com.equipo.fitlog.ui.viewmodel.SessionViewModel
 
 @Composable
 fun NavGraph(vm: SessionViewModel) {
+
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "list") {
+    NavHost(navController = navController, startDestination = "list") {
 
         composable("list") {
             SessionListScreen(navController, vm)
@@ -19,8 +20,11 @@ fun NavGraph(vm: SessionViewModel) {
             AddSessionScreen(navController, vm)
         }
 
-        composable("detail") {
-            DetailScreen(vm)
+        composable("detail/{sessionId}") { backStackEntry ->
+
+            val id = backStackEntry.arguments?.getString("sessionId")?.toInt() ?: 0
+
+            DetailScreen(vm, id)
         }
     }
 }
